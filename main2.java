@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.*;
-
+import java.util.concurrent.TimeUnit;
+// The Thread class based on the Process class from previous project
 class Thread {
     int pid, arrivalTime, burstTime, priority;
     public Thread(int pid, int arrivalTime, int burstTime, int priority) {
@@ -10,6 +11,8 @@ class Thread {
         this.priority = priority;
     }
 }
+
+// Reading the text file and collect informations into a list of threads
 public class main2 {
     public static List<Thread> readThreads(String filename) throws IOException {
         List<Thread> threads = new ArrayList<>();
@@ -29,11 +32,20 @@ public class main2 {
         return threads;
     }
 
-    public static void runThreads(List<Thread> threads) {
+    // Simulate when the thread was running
+    public static void runThreads(List<Thread> threads) throws IOException {
         for (Thread t : threads) {
-            System.out.println(t.burstTime);
+            System.out.println("Process" + t.pid + " has started.");
+            try {
+                TimeUnit.SECONDS.sleep(t.burstTime);
+            } catch (InterruptedException e) {
+                System.out.println(e.getMessage());
+            }
+            System.out.println("Process" + t.pid + "has finished.");
         }
     }
+
+    // Main function
     public static void main (String[] args) {
         try {
             List<Thread> threads = readThreads("./processes.txt");
